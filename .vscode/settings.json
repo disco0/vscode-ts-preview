@@ -5,5 +5,13 @@
     },
     "search.exclude": {
         "out": true // set this to false to include "out" folder in search results
-    }
+    },
+
+    "problems.autoReveal": false,
+    "tasks.statusbar.default.hide": false,
+    "tasks.statusbar.limit": 4,
+    "workbench.colorCustomizations": {
+      "[WinClassic]": {}
+    },
+    "files.eol": "\n"
 }

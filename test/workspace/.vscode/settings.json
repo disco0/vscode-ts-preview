@@ -1,0 +1,5 @@
+{
+    "ts-preview.debug": true,
+    "javascript.implicitProjectConfig.checkJs": false
+
+}

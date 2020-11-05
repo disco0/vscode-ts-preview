@@ -1,30 +1,34 @@
 {
-    "name": "type-script-preview",
+    "name": "ts-preview",
     "displayName": "TypeScript Preview",
     "description": "Preview .ts in .js at the moment, just like the official playground. It's a preview version now.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "preview": true,
-    "publisher": "febean",
+    "publisher": "disk0",
     "icon": "images/logo.png",
     "engines": {
-        "vscode": "^1.23.0"
+        "vscode": "^1.40.0"
     },
     "categories": [
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.tsPreview"
+        "onLanguage:typescript",
+        "workspaceContains:**/*.ts",
+        "workspaceContains:**/*.tsx",
+        "onCommand:ts-preview.dynamic"
     ],
     "repository": {
         "type": "git",
         "url": "https://github.com/win7killer/vscode-ts-preview"
+        
     },
-    "main": "./out/extension.js",
+    "main": "./dist/extension.js",
     "contributes": {
         "commands": [
             {
                 "when": "resourceLangId == typescript",
-                "command": "extension.tsPreview",
+                "command": "ts-preview.dynamic",
                 "title": "TS Preview"
             }
         ],
@@ -32,7 +36,7 @@
             "editor/context": [
                 {
                     "when": "resourceLangId == typescript",
-                    "command": "extension.tsPreview",
+                    "command": "ts-preview.dynamic",
                     "group": "navigation"
                 }
             ]
@@ -43,31 +47,40 @@
             "properties": {
                 "ts-preview.mode": {
                     "scope": "window",
-					"type": "string",
-					"enum": [
-						"editor",
-						"webview"
-					],
-					"default": "editor",
-					"description": "预览模式，编辑器模式和webview模式"
+                    "type": "string",
+                    "enum": [
+                        "editor",
+                        "webview"
+                    ],
+                    "default": "editor",
+                    "description": "预览模式，编辑器模式和webview模式"
+                },
+                "ts-preview.debug": {
+                    "scope": "window",
+                    "type": "boolean",
+                    "default": false,
+                    "title": "Debug Logging",
+                    "description": "Enabled extended debug level messages in extension output channel."
                 }
             }
         }
     },
     "scripts": {
         "vscode:prepublish": "npm run compile",
-        "compile": "tsc -p ./",
-        "watch": "tsc -watch -p ./",
-        "postinstall": "node ./node_modules/vscode/bin/install",
-        "test": "npm run compile && node ./node_modules/vscode/bin/test"
+        "compile": "tsc -p ./src",
+        "watch": "tsc -watch -p ./src"
+    },
+    "$comment": {
+        "TODO:Migrate:test": "npm run compile && node ./node_modules/vscode/bin/test"
     },
     "devDependencies": {
-        "@types/mocha": "^2.2.42",
-        "@types/node": "^7.0.43",
-        "tslint": "^5.8.0",
-        "vscode": "^1.1.6"
+        "@types/mocha": "^8.0.3",
+        "@types/node": "^14.6.4",
+        "@types/vscode": "^1.40.0",
+        "tsdef": "^0.0.14"
     },
     "dependencies": {
-        "typescript": "^2.9.2"
+        "helpful-decorators": "^2.1.0",
+        "typescript": "^4.1.0-dev.20201023"
     }
 }
