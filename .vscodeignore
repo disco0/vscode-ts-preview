@@ -1,9 +1,12 @@
 .vscode/**
 .vscode-test/**
-out/test/**
-out/**/*.map
-src/**
+test
+out
+src
 .gitignore
 tsconfig.json
 vsc-extension-quickstart.md
 tslint.json
+*.lock
+*-lock.json
+*.vsix
