@@ -1,37 +1,42 @@
-/**
- * @file main js
- * @author fe_bean
- */
-
 import * as vscode from 'vscode';
-import * as ts from 'typescript';
+let { window, Position, Range, workspace, /* StatusBarAlignment */} = vscode;
+import ts from 'typescript';
 import * as path from 'path';
-
 import {rHtml} from './read_file';
 
-let {
-    window,
-    Position,
-    Range,
-    workspace,
-    // StatusBarAlignment
-} = vscode;
+//#region Declaration
+
+export enum PreviewModes 
+{
+    'editor'  = 'editor',
+    'webview' = 'webview'
+};
+export type PreviewMode = keyof typeof PreviewModes;
+
+interface TsPreviewConfiguration
+{
+    mode: PreviewMode
+}
+
+//#endregion Declaration
 
 let editor: any;
-let previewColumn: number = 2;
 let tplStr: string = '';
+let previewColumn: number = 2;
 
-export class Main {
-    doc: vscode.TextDocument;
-    tsDoc: any; // 展示 preview 的 document
-    text: string;
-    newText: string;
-    panel: any;
-    previewMode: string;
-    themeSource: any;
-    scriptSource: any;
-    context: vscode.ExtensionContext;
-    constructor(context: vscode.ExtensionContext) {
+export class PartialPreview 
+{
+    doc:           vscode.TextDocument;
+    tsDoc?:        vscode.TextDocument; // 展示 preview 的 document
+    text:          string;
+    newText:       string;
+    panel?:        vscode.WebviewPanel;
+    previewMode:   PreviewMode;
+    themeSource?:  vscode.Uri;
+    scriptSource?: vscode.Uri;
+    context:       vscode.ExtensionContext;
+    constructor(context: vscode.ExtensionContext) 
+    {
         // 活动窗口
         editor = window.activeTextEditor;
         // 当前窗口document
@@ -41,8 +46,6 @@ export class Main {
         this.newText = '';
         this.previewMode = this.getConfig().mode || 'editor';
         this.context = context;
-        this.themeSource = '';
-        this.scriptSource = '';
         this.init();
     }
     init(): void {
@@ -177,23 +180,29 @@ export class Main {
      * 更新已有的 js preview 内容
      * @param tarEditor
      */
-    writeFile(tarEditor: vscode.TextEditor): void {
+    writeFile(tarEditor: vscode.TextEditor): void 
+    {
         // 行数
-        let lineCount: number = tarEditor.document.lineCount || 0;
-        let start: vscode.Position = new Position(0, 0);
-        let end: vscode.Position = new Position(lineCount + 1, 0);
-        let range: vscode.Range = new Range(start, end);
+        let lineCount: number          = tarEditor.document.lineCount || 0;
+        let start:     vscode.Position = new Position(0, 0);
+        let end:       vscode.Position = new Position(lineCount + 1, 0);
+        let range:     vscode.Range    = new Range(start, end);
         void tarEditor.edit((editBuilder: vscode.TextEditorEdit) => {
             editBuilder.replace(range, this.newText);
         });
 
     }
-    getConfig() : any {
-        let configMode = workspace.getConfiguration('ts-preview').get('mode');
-        console.log(configMode);
-        return {
-            mode: configMode
-        };
+    getConfig(): TsPreviewConfiguration
+    {
+        const configuration =
+            Object.fromEntries(Object.entries(
+                vscode.workspace.getConfiguration('ts-preview'))
+                      .filter(([k,v]) => !['has', 'get', 'update', 'inspect'].includes(k)
+            ))
+        
+        console.log('Read workspace configuration: %o', configuration)
+
+        return configuration as TsPreviewConfiguration;
+        // vscode.workspace.getConfiguration('ts-preview')
     }
 }
-
