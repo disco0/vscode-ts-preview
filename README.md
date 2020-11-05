@@ -1,51 +1,39 @@
-# typescript-preview README
+# typescript-preview-fork
 
-Preview the '.ts' file with '.js' in moment.（实时预览ts文件编译出的js）
-> If you have some issue, just let me know https://github.com/win7killer/vscode-ts-preview [welcome star]
+This is a fork from the original `typescript-preview` extension repo that adds some additional features in addtion to partial refactoring of extension code. 
 
-## preview version, welcome to try. (预览版本，欢迎尝鲜)
-<img src="https://raw.githubusercontent.com/win7killer/vscode-ts-preview/master/images/command.gif" alt="command" width=600/>
+[Upstream Readme][original-readme]
 
+## TODO for translated upstream and local fork
+* General
+    - [x] Mode selection: editor | webview
+    - [x] Refactor to base abstract `Preview` class, and create `DocPreview` and `WebviewPreview` implementations
+ 
+* Compilation
+    - [x] Default to newer compilation target
+    * Postprocessing
+        - [x] Add post-compilation `(compiled: string) => string` hook for modifying output to text editor preview
+        - [x] Prepend `// @ts-nocheck` to compiled files being written to text edtior previews
+    - [ ] (Option to) prioritize tsconfig support under the project file, or path defined in user settings
 
-## Features
+* Preview management
+    - [ ] Enable saving/updating preview text editor to file
+    - [ ] After the file is modified, the preview file will be reminded whether to save before closing, pending processing
+    - [ ] `markdown.preview` mode (?)
 
+	- [ ] Properly handle preview instance / typescript source editor close (this may have worked before refactoring lol)
+ 
+* Webviews
+    - [x] webview mode preview processing
+    - [ ] **[Upstream:Next]** Try to import local resource files (solve multiple theme style files)
+    - [ ] There may be anomalies in multi-column testing. For example, the original file is in the second column and the preview appears in the second
+    - [ ] Serve to port on `localhost` / configurable address (see [Instant Markdown extension][vscode-markdown-extension])
+    * Configuration
+        - [ ] Font size
+        - [ ] Provide several theme colors
 
-## Requirements
+* Build
+	- [ ] Build with webpack, preferrably webpack.config.ts
 
-
-## Extension Settings
-```json
-"ts-preview.mode": {
-    "scope": "window",
-    "type": "string",
-    "enum": [
-        "editor",
-        "webview"
-    ],
-    "default": "editor",
-    "description": "预览模式，编辑器模式和webview模式"
-}
-```
-
-## Known Issues
-
-
-## Release Notes
-
-[see release log](./CHANGELOG.md)
------------------------------------------------------------------------------------------------------------
-
-**Enjoy!**
-
-## To do list
-- 修改文件后，预览文件关闭前会提醒是否保存，待处理
-- webview 模式 预览处理  // done
-- markdown.preview 模式
-- 本地资源文件尝试引入【解决多主题样式文件】 // next
-- 多栏情况测试，可能会有异常，比如原文件在第2栏，预览出现在第2栏
-- 增加相应配置：
-    - 字号
-    - 提供几种主题色
-    - 模式选择： editor | webview // done
-    - ts编译配置：项目文件下优先配置tsconfig支持
-
+[original-readme]: ./README-ORIG.md
+[vscode-markdown-extension]: https://github.com/dbankier/vscode-instant-markdown/
