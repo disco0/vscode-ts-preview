@@ -1,0 +1,49 @@
+/**
+ * Default settings extracted by tsconfig.json from a project in the most
+ * recent commit (or latest otherwise).
+ */
+{
+    // Optional
+    "extends": "@tsconfig/node12/tsconfig.json",
+    "include": 
+    [
+        "globals.d.ts",
+        "./",
+    ],
+    "compilerOptions": 
+    {
+        "experimentalDecorators": true,
+        "module":    "commonjs",
+        "target":    "es2019",
+
+        "outDir": "../dist",
+        "rootDir": "./",
+        // "paths": {
+        //   "package.json": ["../package.json"]
+        // },
+
+        "sourceMap": true,
+        "strict": true,
+
+        "checkJs": false,
+        "allowJs": false,
+
+        "pretty": true,
+        "listEmittedFiles": true,
+        "resolveJsonModule": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "allowUmdGlobalAccess": true,
+        "esModuleInterop": true,
+        
+        "typeRoots": 
+        [
+            "../node_modules/@types"
+        ]
+    },
+	"exclude": 
+    [
+        "_main.ts",
+        "./test"
+    ]
+}
